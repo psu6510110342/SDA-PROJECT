@@ -1,3 +1,3 @@
 export const addPost = (req,res)=>{
-  res.json("form c")
+    res.json("from controller")
 }
