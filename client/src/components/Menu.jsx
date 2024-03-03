@@ -1,5 +1,23 @@
-const Menu = () => {
-        const posts = [
+import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
+
+const Menu = ({cat}) => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8800/api/posts/?cat=${cat}`);
+        setPosts(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [cat]);
+        /*const posts = [
             {
                 id: 1,
                 title: "1Lorem ipsum dolor sit amet consectetur adipisicing elit",
@@ -24,7 +42,7 @@ const Menu = () => {
                 desc: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. A possimus excepturi aliquid nihil cumque ipsam facere aperiam at! Ea dolorem ratione sit debitis deserunt repellendus numquam ab vel perspiciatis corporis!",
                 img: "https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
             },
-        ];
+        ];*/
     return (
       <div className="menu">
         <h1>Other posts you may like</h1>

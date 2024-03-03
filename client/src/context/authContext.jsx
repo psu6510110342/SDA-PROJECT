@@ -1,4 +1,3 @@
-// authContext.jsx
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 
@@ -10,12 +9,19 @@ export const AuthContexProvider = ({ children }) => {
   );
 
   const login = async (inputs) => {
-    const res = await axios.post(
-      "http://localhost:8800/api/auth/login", inputs
-    );
-    setCurrentUser(res.data);
-    console.log("Received cookie:", res.headers['set-cookie']);
-    
+    try {
+      const res = await axios.post("http://localhost:8800/api/auth/login", inputs);
+      const { token, ...userData } = res.data;
+  
+      // Store the token in local storage
+      localStorage.setItem('token', token);
+  
+      // Do something with the user data if needed
+      setCurrentUser(userData);
+    } catch (error) {
+      console.error('Login failed:', error);
+      // Handle error
+    }
   };
 
   const logout = async (inputs) => {

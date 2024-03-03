@@ -32,15 +32,33 @@ const [post, setPost] = useState({});
     fetchData();
   }, [postId]);
 
-  const handleDelete = async ()=>{
+  const handleDelete = async () => {
     try {
-        
-      await axios.delete(`http://localhost:8800/api/posts/${postId}`);
-      navigate("/")
+      // Get the token from local storage
+      const token = localStorage.getItem('token');
+  
+      // Check if token exists
+      if (!token) {
+        console.error("Token not found!");
+        return; // Handle the absence of token as per your requirement
+      }
+  
+      // Set the token in the request headers
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
+  
+      // Send the delete request with the token included in the headers
+      await axios.delete(`http://localhost:8800/api/posts/${postId}`, { headers });
+      
+      // Navigate to another page after successful deletion
+      navigate("/");
     } catch (err) {
-        console.error("Error deleting post:", err);
+      console.error("Error deleting post:", err);
+      // Handle error
     }
-  }
+  };
+  
 
     return (
         <div className="single">
@@ -54,7 +72,7 @@ const [post, setPost] = useState({});
                     </div>
                     {currentUser.username === post.username && (
                         <div className="edit">
-                            <Link to={`/write?edit=${post.id}`} >
+                            <Link to={`/write?edit=${post.id}`} state={post}>
                                 <img src={Edit} alt="Edit" />
                             </Link>
                             <img onClick={handleDelete} src={Delete} alt="Delete" />
@@ -66,7 +84,7 @@ const [post, setPost] = useState({});
                 {post.description}
             </div>
             <div className="menu">
-                <Menu />
+                <Menu cat={post.cat}/>
             </div>
         </div>
     );
