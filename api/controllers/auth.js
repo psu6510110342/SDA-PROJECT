@@ -34,9 +34,8 @@ export const login = (req,res)=>{
         return res.status(400).json("Wrong username or password!");
     const token = jwt.sign({ id: data[0].id }, "jwtkey");
     const { password, ...other } = data[0];
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
+    res.cookie("access_token", token, {
+        httpOnly: false,
       })
       .status(200)
       .json(other);

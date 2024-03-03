@@ -11,10 +11,11 @@ export const AuthContexProvider = ({ children }) => {
 
   const login = async (inputs) => {
     const res = await axios.post(
-      "http://localhost:8800/api/auth/login",
-      inputs
+      "http://localhost:8800/api/auth/login", inputs
     );
     setCurrentUser(res.data);
+    console.log("Received cookie:", res.headers['set-cookie']);
+    
   };
 
   const logout = async (inputs) => {
