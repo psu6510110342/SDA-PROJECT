@@ -11,45 +11,67 @@ const Write = () => {
     const [title, setTitle] = useState(state?.desc || "");
     const [file, setFile] = useState(null);
     const [cat, setCat] = useState(state?.cat || "");
-
     const navigate = useNavigate()
-
-    const upload = async () => {
+    const defaultImageFile = new File(["../public/upload/noimage.png"], "noimage.png");
+    const upload = async (file) => {
         try {
-          const formData = new FormData();
-          formData.append("file", file);
-          const res = await axios.post("http://localhost:8800/api/upload", formData);
-          return res.data;
+            const formData = new FormData();
+            if (file) {
+                formData.append("file", file);
+            } else {
+                // If file is null, append a default image file
+                formData.append("file", defaultImageFile);
+            }
+            const res = await axios.post("http://localhost:8800/api/upload", formData);
+            return res.data;
         } catch (err) {
-          console.log(err);
+            console.log(err);
         }
-      };
+    };
     
 
-      const handleClick = async (e) => {
+    const handleClick = async (e) => {
         e.preventDefault();
         const imgUrl = await upload();
     
         try {
-          state
-            ? await axios.put(`http://localhost:8800/api/posts/${state.id}`, {
-                title,
-                desc: value,
-                cat,
-                img: file ? imgUrl : "",
-              })
-            : await axios.post(`http://localhost:8800/api/posts/`, {
-                title,
-                desc: value,
-                cat,
-                img: file ? imgUrl : "",
-                date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
-              });
-              navigate("/")
+            // Get the token from local storage
+            const token = localStorage.getItem('token');
+            // Check if token exists
+            if (!token) {
+                console.error("Token not found!");
+                // Handle the absence of token as per your requirement
+                return;
+            }
+            // Set the token in the request headers
+            const headers = {
+                Authorization: `Bearer ${token}`
+            };
+            // Make the request with the token included in the headers
+            if (state) {
+                await axios.put(`http://localhost:8800/api/posts/${state.id}`, {
+                    title,
+                    description: value,
+                    cat,
+                    img: file ? imgUrl : "",
+                }, { headers });
+            } else {
+                await axios.post(`http://localhost:8800/api/posts/`, {
+                    title,
+                    description: value,
+                    cat,
+                    img: file ? imgUrl : "",
+                    date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+                }, { headers });
+            }
+    
+            // Navigate to another page after successful operation
+            navigate("/");
         } catch (err) {
-          console.log(err);
+            console.log(err);
+            // Handle error
         }
-      };
+    };
     
       return (
         <div className="add">

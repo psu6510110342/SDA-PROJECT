@@ -40,10 +40,10 @@ export const addPost = (req, res) => {
             // Token is valid, you can access the decoded information
             const userId = decoded.id;
             const q =
-                "INSERT INTO post(`title`, `desc`, `img`, `cat`, `date`,`uid`) VALUES (?, ?, ?, ?, ?, ?)";
+                "INSERT INTO post(`title`, `description`, `img`, `cat`, `date`,`uid`) VALUES (?, ?, ?, ?, ?, ?)";
             const values = [
                 req.body.title,
-                req.body.desc,
+                req.body.description,
                 req.body.img,
                 req.body.cat,
                 req.body.date,
