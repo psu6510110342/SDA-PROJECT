@@ -65,32 +65,37 @@ const [post, setPost] = useState({});
   }
 
     return (
-        <div className="single">
-            <div className="content">
-                <img src={'../public/upload/'+post?.img} alt="no image" />
-                <div className="user">
-                    <img src={post.userImg} alt="" />
-                    <div className="info">
-                        <span>{post.username}</span>
-                        <p>Posted {moment(post.date).fromNow()}</p>
-                    </div>
-                    {currentUser.username === post.username && (
+        <div className="singlen">
+        <div class="row">
+            <div class="col-sm-8">
+                <div className="content">
+                <img src={`../public/upload/${post?.img}`} alt="no image" style={{ maxWidth: '100%', height: 'auto' }} />
+
+                    <div className="user">
+                        <img src={post.userImg} alt="" />
+                        <div className="info">
+                            <span>{post.username}</span>
+                            <p>Posted {moment(post.date).fromNow()}</p>
+                        </div>
                         <div className="edit">
-                            <Link to={`/write?edit=${post.id}`} state={post}>
-                                <img src={Edit} alt="Edit" />
+                            <Link to={`/write?edit=${post.id}`} state={post} >
+                                <img src={Edit} alt="" />
                             </Link>
                             <img onClick={handleDelete} src={Delete} alt="Delete" />
                         </div>
-                    )}
-
+                    </div>
+                    <h1>{getText(post.title)}</h1>
+                    <p>{getText(post.description)}</p>
                 </div>
-                <h1>{getText(post.title)}</h1>
-                {getText(post.description)}
             </div>
-            <div className="menu">
-                <Menu cat={post.cat}/>
+            <div class="col-sm-4">
+                <div className="menu">
+                    <Menu />
+                </div>
             </div>
         </div>
+
+    </div>
     );
 }
 
