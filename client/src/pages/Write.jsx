@@ -19,7 +19,7 @@ const Write = () => {
     setValue(state.title || "");
     setTitle(state.description || "");
     setCat(state.cat || "");
-  }, [state]);
+  }, []);
 
   const upload = async (file) => {
     try {
@@ -89,9 +89,10 @@ const Write = () => {
   return (
     <div className="add">
       <div className="content">
-        <input type="text" placeholder="Title" value={getText(value)} onChange={(e) => setTitle(e.target.value)} />
+        <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
         <div className="editorContainer">
-          <ReactQuill className="editor" theme="snow" value={getText(title)} onChange={setTitle} />
+          <ReactQuill className="editor" theme="snow" value={value}
+            onChange={setValue} />
         </div>
       </div>
       <div className="menu">
