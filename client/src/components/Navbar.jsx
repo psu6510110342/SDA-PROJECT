@@ -21,7 +21,7 @@ function Navbarr() {
                         </Nav>
                         <Nav>
                             <Nav.Link href="/write">Logout</Nav.Link>
-                            <Nav.Link href="/write">Login</Nav.Link>
+                            <Nav.Link href="/login">Login</Nav.Link>
                             <Nav.Link href="/write">Write</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>

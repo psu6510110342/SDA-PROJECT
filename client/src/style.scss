@@ -34,7 +34,7 @@ $bgbule: #112D4E;
   }
 
   //home
-  .post-des{
+  .post-des {
     @import url("https://fonts.googleapis.com/css2?family=Baloo+2&display=swap");
     $main-blue: #0076bd !default;
     $main-blue-rgb-015: rgba(0, 118, 189, 0.1) !default;
@@ -302,7 +302,8 @@ $bgbule: #112D4E;
     }
 
   }
-//single
+
+  //single
   .singlen {
     display: flex;
     gap: 50px;
@@ -562,90 +563,98 @@ $bgbule: #112D4E;
         height: 50px;
       }
     }
+  }
 
+  //WRITE
+  .add {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
 
-    //WRITE
-
-    .add {
-      margin-top: 20px;
+    .content {
+      flex: 5;
       display: flex;
+      flex-direction: column;
       gap: 20px;
 
-      .content {
-        flex: 5;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-
-        input {
-          padding: 10px;
-          border: 1px solid lightgray;
-        }
-
-        .editorContainer {
-          height: 300px;
-          overflow: scroll;
-          border: 1px solid lightgray;
-
-          .editor {
-            height: 100%;
-            border: none;
-          }
-        }
+      input {
+        padding: 10px;
+        border: 1px solid lightgray;
       }
 
-      .menu {
-        flex: 2;
+      .editorContainer {
+        height: 300px;
+        overflow: scroll;
+        border: 1px solid lightgray;
+
+        .editor {
+          height: 100%;
+          border: none;
+        }
+      }
+    }
+
+    .menu {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .item {
+        border: 1px solid lightgray;
+        padding: 10px;
+        flex: 1;
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #555;
 
-        .item {
-          border: 1px solid lightgray;
-          padding: 10px;
-          flex: 1;
+        h1 {
+          font-size: 20px;
+        }
+
+        .file {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+
+        .buttons {
           display: flex;
-          flex-direction: column;
           justify-content: space-between;
-          font-size: 12px;
-          color: #555;
 
-          h1 {
-            font-size: 20px;
-          }
-
-          .file {
-            text-decoration: underline;
+          :first-child {
             cursor: pointer;
-          }
-
-          .buttons {
-            display: flex;
-            justify-content: space-between;
-
-            :first-child {
-              cursor: pointer;
-              color: teal;
-              background-color: white;
-              border: 1px solid teal;
-              padding: 3px 5px;
-            }
-
-            :last-child {
-              cursor: pointer;
-              color: white;
-              background-color: teal;
-              border: 1px solid teal;
-              padding: 3px 5px;
+            color: $bgbule;
+            background-color: $bluebg;
+            border: 1px solid $bgbule;
+            padding: 3px 5px;
+            &:hover {
+              border: 1px solid $bluebg;
+              background-color: $bgbule;
+              color: $bluebg;
             }
           }
 
-          .cat {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            color: teal;
+          :last-child {
+            cursor: pointer;
+            color: $bluebg;
+            background-color: $bgbule;
+            border: 1px solid $bgbule;
+            padding: 3px 5px;
+            &:hover {
+              border: 1px solid $bgbule;
+              background-color: $bluebg;
+              color: $bgbule;
+            }
           }
+        }
+
+        .cat {
+          display: flex;
+          align-items: center;
+          gap: 2px;
+          color: $bgbule;
         }
       }
     }
