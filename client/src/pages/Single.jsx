@@ -58,12 +58,16 @@ const [post, setPost] = useState({});
       // Handle error
     }
   };
-  
+
+  const getText = (html) =>{
+    const doc = new DOMParser().parseFromString(html, "text/html")
+    return doc.body.textContent
+  }
 
     return (
         <div className="single">
             <div className="content">
-                <img src={post?.img} alt="" />
+                <img src={'../public/upload/'+post?.img} alt="no image" />
                 <div className="user">
                     <img src={post.userImg} alt="" />
                     <div className="info">
@@ -80,8 +84,8 @@ const [post, setPost] = useState({});
                     )}
 
                 </div>
-                <h1>{post.title}</h1>
-                {post.description}
+                <h1>{getText(post.title)}</h1>
+                {getText(post.description)}
             </div>
             <div className="menu">
                 <Menu cat={post.cat}/>
