@@ -7,24 +7,19 @@ import axios from "axios";
 import moment from "moment"
 import { useContext } from "react";
 import { AuthContext } from "../context/authContext";
+
 const Single = () => {
-
-const [post, setPost] = useState({});
-
+  const [post, setPost] = useState({});
   const location = useLocation();
   const navigate = useNavigate();
-
   const postId = location.pathname.split("/")[2];
-
   const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/posts/${postId}`);
+        const res = await axios.get(`http://34.124.189.147:8800/api/posts/${postId}`);
         setPost(res.data);
-        
-
       } catch (err) {
         console.log(err);
       }
@@ -34,69 +29,60 @@ const [post, setPost] = useState({});
 
   const handleDelete = async () => {
     try {
-      // Get the token from local storage
       const token = localStorage.getItem('token');
-  
-      // Check if token exists
       if (!token) {
         console.error("Token not found!");
-        return; // Handle the absence of token as per your requirement
+        return;
       }
-  
-      // Set the token in the request headers
       const headers = {
         Authorization: `Bearer ${token}`
       };
-  
-      // Send the delete request with the token included in the headers
       await axios.delete(`http://localhost:8800/api/posts/${postId}`, { headers });
-      
-      // Navigate to another page after successful deletion
       navigate("/");
     } catch (err) {
       console.error("Error deleting post:", err);
-      // Handle error
     }
   };
 
-  const getText = (html) =>{
+  const getText = (html) => {
     const doc = new DOMParser().parseFromString(html, "text/html")
     return doc.body.textContent
   }
 
-    return (
-        <div className="singlen">
-        <div class="row">
-            <div class="col-sm-8">
-                <div className="content">
-                <img src={`../public/upload/${post?.img}`} alt="no image" style={{ maxWidth: '100%', height: 'auto' }} />
+  return (
+    <div className="singlen">
+      <div className="row">
+        <div className="col-sm-8">
+          <div className="content">
+            <img src={`../public/upload/${post?.img}`} alt="no image" style={{ maxWidth: '100%', height: 'auto' }} />
+            <div className="user">
+              <img src={post.userImg} alt="" />
+              <div className="info">
+                <span>{currentUser?.username || "Guest"}</span>
+                <p>Posted {moment(post.date).fromNow()}</p>
+              </div>
+              {currentUser && post && currentUser.username === post.username && (
+                <div className="edit">
+                  <Link to={`/write?edit=${post.id}`} state={post}>
+                    <img src={Edit} alt="" />
+                  </Link>
+                  <img onClick={handleDelete} src={Delete} alt="Delete" />
+                </div>
+              )}
 
-                    <div className="user">
-                        <img src={post.userImg} alt="" />
-                        <div className="info">
-                            <span>{post.username}</span>
-                            <p>Posted {moment(post.date).fromNow()}</p>
-                        </div>
-                        <div className="edit">
-                            <Link to={`/write?edit=${post.id}`} state={post} >
-                                <img src={Edit} alt="" />
-                            </Link>
-                            <img onClick={handleDelete} src={Delete} alt="Delete" />
-                        </div>
-                    </div>
-                    <h1>{getText(post.title)}</h1>
-                    <p>{getText(post.description)}</p>
-                </div>
             </div>
-            <div class="col-sm-4">
-                <div className="menu">
-                    <Menu />
-                </div>
-            </div>
+            <h1>{getText(post.title)}</h1>
+            <p>{getText(post.description)}</p>
+          </div>
         </div>
-
+        <div class="col-sm-4">
+          <div className="menu">
+            <Menu />
+          </div>
+        </div>
+      </div>
     </div>
-    );
+  );
 }
 
-export default Single
+export default Single;

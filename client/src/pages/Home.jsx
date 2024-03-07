@@ -26,7 +26,7 @@ const Home = () => {
       }
     return (
 <div className="home">
-<div class="h1 text-center text-dark py-1" id="pageHeaderTitle">BLOG TYPE</div>
+<div className="h1 text-center text-dark py-1" id="pageHeaderTitle">BLOG TYPE</div>
 <div className="card-type">
     <div className="container bootstrap snippets bootdeys">
         <div className="row">
@@ -123,7 +123,7 @@ const Home = () => {
                                         <div className="postcard__preview-txt">{getText(post.description)} .. 
                                             <a className="postcard__img_link" href="#">
                                                 <Link className="link" style={{color:"#3F72AF"}} to={`/post/${post.id}`}>
-                                                     .  Read More
+                                                      Read More
                                                 </Link>
                                             </a></div>
 

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
-const Menu = ({ cat }) => {
+import { Link } from "react-router-dom";
+const Menu = ({ }) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:8800/api/posts/");
+        const res = await axios.get(`http://localhost:8800/api/posts`);
         setPosts(res.data);
       } catch (err) {
         console.log(err);
@@ -23,7 +23,9 @@ const Menu = ({ cat }) => {
         <div className="post" key={post.id}>
           <img src={`../public/upload/${post.img}`} alt="" />
           <h2>{post.title}</h2>
-          <button>Read More</button>
+          <Link className="link" style={{ color: "#3F72AF" }} to={`/post/${post.id}`}>
+            Read More
+          </Link>
         </div>
       ))}
     </div>

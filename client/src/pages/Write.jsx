@@ -1,191 +1,145 @@
-import React, { useState, useEffect } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
-import moment from "moment";
 
-const Write = () => {
-  const location = useLocation();
-  const state = location.state || {}; // Default to an empty object if state is undefined
-  const [value, setValue] = useState(state.description || "");
-  const [title, setTitle] = useState(state.title || "");
-  const [file, setFile] = useState(null);
-  const [cat, setCat] = useState(state.cat || "");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    setValue(state.title || "");
-    setTitle(state.description || "");
-    setCat(state.cat || "");
-  }, []);
-
-  const upload = async (file) => {
-    try {
-      const formData = new FormData();
-      console.log("File:", file);
-      formData.append("file", file);
-      const res = await axios.post("http://localhost:8800/api/upload", formData);
-      return res.data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleClick = async (e) => {
-    e.preventDefault();
-
-    // Pass the file parameter to the upload function
-    const imgUrl = await upload(file);
-    console.log(imgUrl);
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("Token not found!");
-        return;
+const Home = () => {
+    const [posts, setPosts] = useState([]);
+    const cat = useLocation().search
+  
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const res = await axios.get(`http://localhost:8800/api/posts${cat}`);
+            setPosts(res.data);
+          } catch (err) {
+            console.log(err);
+          }
+        };
+        fetchData();
+      }, [cat]);
+      
+    const getText = (html) =>{
+        const doc = new DOMParser().parseFromString(html, "text/html")
+        return doc.body.textContent
       }
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      if (state.id) {
-        await axios.put(
-          `http://localhost:8800/api/posts/${state.id}`,
-          {
-            title,
-            description: value,
-            cat,
-            img: file ? imgUrl : "",
-          },
-          { headers }
-        );
-      } else {
-        await axios.post(
-          `http://localhost:8800/api/posts/`,
-          {
-            title,
-            description: value,
-            cat,
-            img: file ? imgUrl : "",
-            date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
-          },
-          { headers }
-        );
-      }
-
-      // Navigate to another page after successful operation
-      navigate("/");
-    } catch (err) {
-      console.log(err);
-      // Handle error
-    }
-  };
-
-  const getText = (html) => {
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    return doc.body.textContent;
-  };
-
-  return (
-        <div>
-        <div className="add">
+    return (
+<div className="home">
+<div className="h1 text-center text-dark py-1" id="pageHeaderTitle">BLOG TYPE</div>
+<div className="card-type">
+    <div className="container bootstrap snippets bootdeys">
+        <div className="row">
+            <div className="col-md-4 col-sm-6 content-card">
+                <div className="card-big-shadow">
+                    <div className="card card-just-text" data-background="color" data-color="blue" data-radius="none">
+                        <div className="content">
+                            <h6 className="category">ART</h6>
+                            <h4 className="title"><a href="/?cat=art">ART</a></h4>
 
 
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <div className="content"> 
-                    <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-                        <div className="editorContainer" style={{ backgroundColor: "white" }}>
-                            <ReactQuill
-                                className="editor"
-                                theme="snow"
-                                value={value}
-                                onChange={setValue}
-                            />
+                            <p className="description">Explore diverse art forms, artists, and trends in the vibrant world of visual expression.</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-4 pt-2">
-                    <div className="menu">
-                        <div className="item">
-                            <h1>Publish</h1>
-                            <span>
-                                <b>Status: </b> Draft
-                            </span>
-                            <span>
-                                <b>Visibility: </b> Public
-                            </span>
-                            <input style={{ display: "none" }} type="file" id="file" />
-                            <label className="file" htmlFor="file">
-                                Upload Image
-                            </label>
-                            <div className="buttons">
-                                <button>Save as a draft</button>
-                                <button>Update</button>
-                            </div>
+            </div>
+            <div className="col-md-4 col-sm-6 content-card">
+                <div className="card-big-shadow">
+                    <div className="card card-just-text" data-background="color" data-color="blue2" data-radius="none">
+                        <div className="content">
+                            <h6 className="category">SCIENCE</h6>
+                            <h4 className="title"><a href="/?cat=science">SCIENCE</a></h4>
+                            <p className="description">Discover the latest breakthroughs, research, and innovations across various scientific disciplines.</p>
                         </div>
-                        <div className="item">
-                            <h1>Category</h1>
-                            <div className="cat">
-                                <input type="radio"
-                  checked={cat === "art"}
-                  name="cat"
-                  value="art"
-                  id="art"
-                  onChange={(e) => setCat(e.target.value)}/>
-                                <label htmlFor="art">Art</label>
-                            </div>
-                            <div className="cat">
-                                <input type="radio"
-                  checked={cat === "science"}
-                  name="cat"
-                  value="science"
-                  id="science"
-                  onChange={(e) => setCat(e.target.value)} />
-                                <label htmlFor="science">Science</label>
-                            </div>
-                            <div className="cat">
-                                <input type="radio"
-                  checked={cat === "technology"}
-                  name="cat"
-                  value="technology"
-                  id="technology"
-                  onChange={(e) => setCat(e.target.value)} />
-                                <label htmlFor="technology">Technology</label>
-                            </div>
-                            <div className="cat">
-                                <input type="radio"
-                  checked={cat === "cinema"}
-                  name="cat"
-                  value="cinema"
-                  id="cinema"
-                  onChange={(e) => setCat(e.target.value)} />
-                                <label htmlFor="cinema">Cinema</label>
-                            </div>
-                            <div className="cat">
-                                <input type="radio"
-                  checked={cat === "design"}
-                  name="cat"
-                  value="design"
-                  id="design"
-                  onChange={(e) => setCat(e.target.value)} />
-                                <label htmlFor="design">Design</label>
-                            </div>
-                            <div className="cat">
-                                <input type="radio"
-                  checked={cat === "food"}
-                  name="cat"
-                  value="food"
-                  id="food"
-                  onChange={(e) => setCat(e.target.value)} />
-                                <label htmlFor="food">Food</label>
-                            </div>
+                    </div>
+                </div>
+            </div>
+            <div className="col-md-4 col-sm-6 content-card">
+                <div className="card-big-shadow">
+                    <div className="card card-just-text" data-background="color" data-color="blue" data-radius="none">
+                        <div className="content">
+                            <h6 className="category">TECHNOLOGY</h6>
+                            <h4 className="title"><a href="/?cat=technology">TECHNOLOGY</a></h4>
+                            <p className="description">Stay updated on gadgets, software, and emerging tech trends shaping the digital landscape.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="col-md-4 col-sm-6 content-card">
+                <div className="card-big-shadow">
+                    <div className="card card-just-text" data-background="color" data-color="blue2" data-radius="none">
+                        <div className="content">
+                            <h6 className="category">CINEMA</h6>
+                            <h4 className="title"><a href="/?cat=cinema">CINEMA</a></h4>
+                            <p className="description">Immerse yourself in movie reviews, behind-the-scenes insights, and discussions about filmmaking.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="col-md-4 col-sm-6 content-card">
+                <div className="card-big-shadow">
+                    <div className="card card-just-text" data-background="color" data-color="blue" data-radius="none">
+                        <div className="content">
+                            <h6 className="category">DESIGN</h6>
+                            <h4 className="title"><a href="/?cat=design">DESIGN</a></h4>
+                            <p className="description">Celebrate creativity in graphic, web, and interior design, exploring trends and influential designers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="col-md-4 col-sm-6 content-card">
+                <div className="card-big-shadow">
+                    <div className="card card-just-text" data-background="color" data-color="blue2" data-radius="none">
+                        <div className="content">
+                            <h6 className="category">FOOD</h6>
+                            <h4 className="title"><a href="/?cat=food">FOOD</a></h4>
+                            <p className="description">Indulge in culinary delights with mouth-watering recipes, food culture explorations, and cooking insights.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-);};
+</div>
+<div className="py-2"></div>
+<div class="h1 text-center text-light py-3" id="pageHeaderTitle" style={{ backgroundColor: "#112D4E" }}>BLOG</div>
+<div className="container p-5" style={{ backgroundColor: "#112D4E" }}>
+    <div className="post-des px-">
+        <div className="posts">
+            {posts.map((post) => (
+                <div className="post" key={post.id}>
+                    <div className="post-des">
+                        <section className="light">
+                            <div className="container py-2">
+                                <article className="postcard light blue">
+                                    <a className="postcard__img_link" href="#" >
+                                        <img className="postcard__img" src={'../public/upload/'+post.img} alt="no image"  />
+                                    </a>
+                                    <div className="postcard__text t-dark">
+                                        <Link className="link" to={`/post/${post.id}`}>
+                                            <h1 className="postcard__title blue px-1"><a href="#">{getText(post.title)}</a></h1>
+                                        </Link>
+                                        <div className="postcard__bar"></div>
+                                        <div className="postcard__preview-txt">{getText(post.description)} .. 
+                                            <a className="postcard__img_link" href="#">
+                                                <Link className="link" style={{color:"#3F72AF"}} to={`/post/${post.id}`}>
+                                                      Read More
+                                                </Link>
+                                            </a></div>
 
-export default Write;
+                                    </div>
+                                </article>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+            ))}
+        </div>
+    </div>
+</div>
+
+</div>
+);
+}
+export default Home

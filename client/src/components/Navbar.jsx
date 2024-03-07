@@ -3,7 +3,6 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import NavbarBootstrap from 'react-bootstrap/Navbar'; // Renamed imported Navbar
 import { AuthContext } from "../context/authContext.jsx";
-import { Link } from "react-router-dom";
 
 const CustomNavbar = () => {
     const { currentUser, logout } = useContext(AuthContext);
@@ -25,7 +24,7 @@ const CustomNavbar = () => {
                         <Nav>
                             {currentUser ? <Nav.Link onClick={logout} href="/login">logout</Nav.Link> : <Nav.Link href="/login">login</Nav.Link>}
                             <Nav.Link >{currentUser?.username || "guest"}</Nav.Link>
-                            <Nav.Link href="/write">Write</Nav.Link>
+                            {currentUser ? <Nav.Link href="/write">Write</Nav.Link> : <Nav.Link></Nav.Link>}
                         </Nav>
                     </NavbarBootstrap.Collapse>
                 </Container>

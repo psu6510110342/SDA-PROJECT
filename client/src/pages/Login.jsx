@@ -29,7 +29,7 @@ const Login = () => {
       setError(err.response.data); // Make sure err.response.data contains the error message
     }
   };
-  
+
   return (
     <div className="auth-new">
       <section className="vh-100 gradient-custom">
@@ -42,25 +42,29 @@ const Login = () => {
                     <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
                     <p className="text-white-50 mb-5">Please enter your login and password!</p>
 
-                    <div className="form-outline form-white mb-4">
+                    <div className="form-outline form-white mb-4" style={{ fontSize: '1.2rem', borderRadius: '10px', width: '100%', height: '10%' }}>
                       <input
                         required
                         type="text"
                         placeholder="username"
                         name="username"
                         onChange={handleChange}
+                        style={{ padding: '10px', borderRadius: '10px', width: '100%', height: '100%' }}
                       />
                     </div>
 
-                    <div className="form-outline form-white mb-4 mb-5 pb-lg-2">
+                    <div className="form-outline form-white mb-4 mb-5 pb-lg-2" style={{ fontSize: '1.2rem', borderRadius: '10px', width: '100%', height: '10%' }}>
                       <input
                         required
                         type="password"
                         placeholder="password"
                         name="password"
                         onChange={handleChange}
+                        style={{ padding: '10px', borderRadius: '10px', width: '100%', height: '100%' }}
                       />
                     </div>
+
+
 
                     <button className="btn btn-outline-light btn-lg px-5 " type="submit" onClick={handleSubmit}>
                       Login
