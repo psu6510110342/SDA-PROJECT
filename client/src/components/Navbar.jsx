@@ -1,51 +1,37 @@
 import React, { useContext } from "react";
-import Logo from "../img/logo.png";
-import { Link } from "react-router-dom";
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import NavbarBootstrap from 'react-bootstrap/Navbar'; // Renamed imported Navbar
 import { AuthContext } from "../context/authContext.jsx";
 
-const Navbar = () => {
-    const {currentUser,logout} = useContext(AuthContext);
+const CustomNavbar = () => {
+    const { currentUser, logout } = useContext(AuthContext);
     return (
-        <div className="navbar">
-            <div className="container">
-                <div className="logo">
-                    <Link to="/">
-                        <img src={Logo} alt="" />
-                    </Link>
-                </div>
-                <div className="links">
-                    <Link className="link" to="/?cat=art">
-                        <h6>ART</h6>
-                    </Link>
-                    <Link className="link" to="/?cat=science">
-                        <h6>SCIENCE</h6>
-                    </Link>
-                    <Link className="link" to="/?cat=technology">
-                        <h6>TECHNOLOGY</h6>
-                    </Link>
-                    <Link className="link" to="/?cat=cinema">
-                        <h6>CINEMA</h6>
-                    </Link>
-                    <Link className="link" to="/?cat=design">
-                        <h6>DESIGN</h6>
-                    </Link>
-                    <Link className="link" to="/?cat=food">
-                        <h6>FOOD</h6>
-                    </Link>
-                    <Link className="link" to="/login">
-                        Login
-                    </Link>
-                    <span>{currentUser?.username || "guest"}</span>
-                    { currentUser ? <span onClick={logout}>Logout</span> : <Link className="link" to="/login"> login</Link>}
-                    <span className="write">
-                        <Link className="link" to="/write">
-                            Write
-                        </Link>
-                    </span>
-                </div>
-            </div>
+        <div className='nav-new'>
+            <NavbarBootstrap collapseOnSelect expand="lg" className="navbar navbar-dark bg-transparent">
+                <Container fluid style={{ backgroundColor: "#112D4E", padding: "0" }}>
+                    <NavbarBootstrap.Brand href="/"> BLOG-APP</NavbarBootstrap.Brand>
+                    <NavbarBootstrap.Toggle aria-controls="responsive-navbar-nav" />
+                    <NavbarBootstrap.Collapse id="responsive-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link href="/?cat=art">ART</Nav.Link>
+                            <Nav.Link href="/?cat=science">SCIENCE</Nav.Link>
+                            <Nav.Link href="/?cat=technology">TECHNOLOGY</Nav.Link>
+                            <Nav.Link href="/?cat=cinema">CINEMA</Nav.Link>
+                            <Nav.Link href="/?cat=design">DESIGN</Nav.Link>
+                            <Nav.Link href="/?cat=food">FOOD</Nav.Link>
+                        </Nav>
+                        <Nav>
+                            {currentUser ? <Nav.Link onClick={logout} href="/login">logout</Nav.Link> : <Nav.Link href="/login">login</Nav.Link>}
+                            <Nav.Link >{currentUser?.username || "guest"}</Nav.Link>
+                            {currentUser ? <Nav.Link href="/write">Write</Nav.Link> : <Nav.Link></Nav.Link>}
+                        </Nav>
+                    </NavbarBootstrap.Collapse>
+                </Container>
+            </NavbarBootstrap>
+
         </div>
     );
 }
 
-export default Navbar
+export default CustomNavbar;

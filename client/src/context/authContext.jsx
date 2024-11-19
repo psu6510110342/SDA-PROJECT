@@ -20,10 +20,10 @@ export const AuthContexProvider = ({ children }) => {
       setCurrentUser(userData);
     } catch (error) {
       console.error('Login failed:', error);
-      // Handle error
+      throw error; // Throw the error to be caught by the calling function
     }
   };
-
+  
   const logout = async (inputs) => {
     await axios.post("http://localhost:8800/api/auth/logout");
     setCurrentUser(null);

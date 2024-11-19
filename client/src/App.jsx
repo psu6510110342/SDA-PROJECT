@@ -7,11 +7,13 @@ import Write from "./pages/Write";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import "./style.scss"
+import 'bootstrap/dist/css/bootstrap.css';
+import Navbarr from "./components/Navbar";
 
 const Layout = () => {
   return (
     <div>
-      <Navbar />
+      <Navbarr />
       <Outlet/>
       <Footer />
     </div>
