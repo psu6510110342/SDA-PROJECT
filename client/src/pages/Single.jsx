@@ -18,7 +18,7 @@ const Single = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/posts/${postId}`);
+        const res = await axios.get(`http://34.124.189.147:8800/api/posts/${postId}`);
         setPost(res.data);
       } catch (err) {
         console.log(err);
